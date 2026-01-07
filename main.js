@@ -13,6 +13,9 @@ const scene = new THREE.Scene(); // ek scene ya hum bol sakte hai ek new world c
 // in three js there is not unit only numbers
 const camera = new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000)
 
+// camera and mesh ek hi jagah pe hai is liye camera ki position ko thoda sift kar rahe hai
+camera.position.z = 5;
+
 // ab scene ke andar camera ko add karna padega
 scene.add(camera)
 
@@ -34,14 +37,27 @@ scene.add(cube)
 // DirectionalLight(color,intensity)
 const light = new THREE.DirectionalLight(0xffffff,1)
 
+light.position.y = 4;
+light.position.z = 4;
+
 // light ko scene mein
 scene.add(light)
 
 // scene me jo bhi calculation means object par light padegi toh us ka behaviorr and all
 // ab render create karenge
-const render = new THREE.WebGLRenderer()
-render.setSize(innerWidth,innerHeight)
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(innerWidth,innerHeight)
 
 
-document.appendChild(render.domElement) 
-// stopped lecutre at : 39:06
+document.body.appendChild(renderer.domElement) 
+// webjs renderer 1s mein 16 bar update karta hai
+
+function animate(){
+    renderer.render(scene,camera)
+    // jab bhi render function call hota hai toh vo calculation karta hai saar chije
+}
+
+// setanimationloop ke andar jo bhi raheta hai ye use baar baar call karta raheta hai
+renderer.setAnimationLoop(animate)
+
+// ab kuchh visible kyo nahi hai kyoki camera and scene ek hi jagah pe hai
